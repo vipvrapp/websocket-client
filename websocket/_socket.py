@@ -103,8 +103,12 @@ def recv(sock, bufsize):
     try:
         if sock.gettimeout() == 0:
             bytes_ = sock.recv(bufsize)
+            if not bytes_:
+                raise ValueError('On gettimeout')
         else:
             bytes_ = _recv()
+            if not bytes_:
+                raise ValueError('Otherwise')
     except socket.timeout as e:
         message = extract_err_message(e)
         raise WebSocketTimeoutException(message)
@@ -116,7 +120,6 @@ def recv(sock, bufsize):
             raise
 
     if not bytes_:
-        raise Value(f'Bytes {bytes_} is empty.')
         raise WebSocketConnectionClosedException(
             "Connection is already closed.")
 
