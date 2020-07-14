@@ -116,6 +116,7 @@ def recv(sock, bufsize):
             raise
 
     if not bytes_:
+        raise Value(f'Bytes {bytes_} is empty.')
         raise WebSocketConnectionClosedException(
             "Connection is already closed.")
 
