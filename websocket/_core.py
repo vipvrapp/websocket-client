@@ -221,6 +221,8 @@ class WebSocket(object):
         self.sock_opt.timeout = options.get('timeout', self.sock_opt.timeout)
         self.sock, addrs = connect(url, self.sock_opt, proxy_info(**options),
                                    options.pop('socket', None))
+        if self.sock is None:
+            raise ValueError("none sock on creation")
 
         try:
             self.handshake_response = handshake(self.sock, *addrs, **options)
@@ -233,6 +235,7 @@ class WebSocket(object):
                     self.handshake_response = handshake(self.sock, *addrs, **options)
             self.connected = True
         except:
+            raise ValueError("Error on creation")
             if self.sock:
                 self.sock.close()
                 self.sock = None
