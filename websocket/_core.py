@@ -435,11 +435,13 @@ class WebSocket(object):
         """
         Low-level asynchronous abort, wakes up other threads that are waiting in recv_*
         """
+        raise ValueError('Being aborted')
         if self.connected:
             self.sock.shutdown(socket.SHUT_RDWR)
 
     def shutdown(self):
         """close socket, immediately."""
+        raise ValueError('Being shutdown')
         if self.sock:
             self.sock.close()
             self.sock = None
